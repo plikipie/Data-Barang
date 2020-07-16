@@ -65,14 +65,13 @@ function tambah($data) {
 
     function registrasi ($data) {
         global $conn;
-        var_dump($data);
 
         $username = strtolower(stripslashes($data["username"]));
         $password = mysqli_real_escape_string($conn,$data["password"]);
         $password2 = mysqli_real_escape_string($conn,$data["password2"]);
         $email = strtolower (stripslashes($data["email"]));
-
         // cek konfirmasi password  
+
         if($password !== $password2 ) {
             echo "<script>
                 alert('Password tidak sesuai');
@@ -80,11 +79,10 @@ function tambah($data) {
             return false; 
         }
         
-    }
         // enkripsi password
         $password = password_hash($password, PASSWORD_DEFAULT);
         // // tambahakan user baru ke database 
         mysqli_query($conn,"INSERT INTO user VALUES('','$username','$password','$password2','$email')");    
         
         return mysqli_affected_rows($conn);
-?> 
+    }
