@@ -7,8 +7,9 @@ require 'functions.php';
                     alert('user baru berhasil ditambahkan!');
                 </script>";
          } else { 
-             echo mysqli_error($conn);    
+             echo mysqli_error($conn);
         }
+
     }
 
 ?>
@@ -53,7 +54,7 @@ require 'functions.php';
                 </li>
                 <br>
                 <li>
-                    <button class="btn btn-dark" type="submit" name="register"> Register!</button>
+                    <button class="btn btn-dark" type="submit" name="register" value="1"> Register!</button>
                 </li>
             </ul>
         </div>
