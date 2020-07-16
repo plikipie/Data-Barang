@@ -1,16 +1,22 @@
 <?php 
+require 'functions.php';
 // cek tombol submit suda di klik apa belum ?
 if (isset($_POST["login"])) {
     //cek username dan password 
-    if ($_POST["username"] == "admin" && $_POST["password"]=="123") {
-    // jika benar, redirect ke halama login
-        header("Location:index.php");
-        exit;
-} else {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+    // cek terlebih dahulu apakah username & password sudah sesuai blm di database
+    $result = mysqli_query($conn, "SELECT * FROM user WHERE username = '$username'");
+    // cek username ==> 1 berarti ada kalo 0 ngga ada   
+    if(mysqli_num_rows($result)===1) {
+        // cek passowrd
+        $row = mysqli_fetch_assoc($result);
+       if(password_verify($password, $row["password"])) {
+           header("Location:index.php");
+           exit;
+       }
+    }   
     $error = true;
-}
-    // jika salah tampilkan pesan kesalahan
-    
 }
 ?>
 
@@ -31,8 +37,11 @@ if (isset($_POST["login"])) {
     <div class="container text-center alertdark alert-dark">
         <br><br>
         <h1 class="">Halaman Login</h1>
+        <?php if(isset($error)): ?>
+        <p style="color:red; font-style:italic;">username/password salah!</p>
+        <?php endif ?>
         <div class=" container col-sm-4 text-center">
-        <form action="index.php" method="post">
+        <form action="" method="post">
         <ul class="">
             <li>
                 <label for="username" class="">Username :</label>
@@ -40,17 +49,13 @@ if (isset($_POST["login"])) {
             </li>
             <li>
                 <label for="password" class=""> Password :</label>
-                <input  class="form-control form -sm" type="password" name="username" id="password">
-            </li>
-            <br>
-                <?php if(isset($error)):?>
-                <p style="color:red; font-style:italic;">username / password salah!</p>
-                <?php endif; ?>
+                <input  class="form-control form -sm" type="password" name="password" id="password">
+            </li> 
                 <li>
                 <button class="btn btn-dark" type="submit" name="login"> Login</button>
             </li>
             <li class="pt-2">
-                <button class="justify-content-right btn btn-dark" type="submit" name="register" href="register.php">Register</button>
+                <a class="justify-content-right btn btn-dark" type="submit" name="register" href="register.php">Register</a>
             </li>
         </ul>
         <br><br>
